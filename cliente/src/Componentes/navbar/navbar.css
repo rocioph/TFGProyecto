@@ -1,0 +1,353 @@
+/* navbar.css - VERSIÓN MEJORADA */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  background-color: rgba(217, 217, 217, 0.95); /* Gris con transparencia */
+  backdrop-filter: blur(8px); /* Efecto vidrio */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+  width: 100%;
+  border-bottom: 3px solid #4facfe; /* Conexión con el fondo */
+}
+
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px; /* Aumenté el ancho máximo */
+  margin: 0 0 0 auto; /* Empuja todo hacia la derecha */
+  padding-right: 2rem; /* Espacio extra a la derecha */
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem; /* Más espacio entre enlaces */
+  margin-left: auto; /* Empuja los enlaces hacia la derecha */
+  margin-right: 3rem; /* Espacio antes de los botones */
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333333;
+  font-weight: 500;
+  font-size: 1.1rem; /* Texto un poco más grande */
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.nav-links a:hover {
+  background-color: rgba(79, 172, 254, 0.2); /* Azul del fondo */
+  transform: translateY(-2px);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #4facfe; /* Azul del fondo */
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-links a:hover::after {
+  width: 80%;
+}
+
+/* ... (el resto de tu CSS se mantiene igual) ... */
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.9rem 1.8rem; /* Un poco más de padding para mejor aspecto */
+  border-radius: 8px; /* Bordes más redondeados */
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  overflow: hidden; /* Para el efecto de onda */
+}
+
+/* Efecto de onda al hacer hover */
+.btn::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  transform: scale(0);
+  transition: transform 0.5s ease;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.btn:hover::after {
+  transform: scale(2);
+}
+
+/* Botón de Login - Versión outline */
+.btn-login {
+  background-color: #94B9FF;
+  color: white;
+  box-shadow: 0 4px 12px rgba(148, 185, 255, 0.3);
+  font-weight: 600;
+}
+
+.btn-login:hover {
+  background-color: #94B9FF;
+  color: white;
+  transform: translateY(-3px) scale(1.05); /* Efecto de levitación y aumento */
+  box-shadow: 0 5px 15px rgba(148, 185, 255, 0.4);
+}
+
+/* Botón de Registro - Versión sólida */
+.btn-register {
+  background-color: #94B9FF;
+  color: white;
+  box-shadow: 0 4px 12px rgba(148, 185, 255, 0.3);
+  font-weight: 600;
+}
+
+.btn-register:hover {
+  background-color: #7aa3ff; /* Azul un poco más oscuro */
+  transform: translateY(-3px) scale(1.05); /* Efecto de levitación y aumento */
+  box-shadow: 0 6px 18px rgba(148, 185, 255, 0.5);
+}
+
+/* Efecto de pulso al hacer hover en ambos botones */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.btn:hover {
+  animation: pulse 0.5s ease;
+}
+
+.nav-logo {
+  height: 70px; /* ← Mucho más pequeño (era 30-45px) */
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 15px; /* ← Pegado al borde izquierdo */
+  top: 5px;  /* ← Pegado al borde superior */
+  z-index: 1000;
+  text-decoration: none;
+}
+
+
+/* ===== ESTILOS ACTUALIZADOS PARA EL MENÚ ADMIN ===== */
+
+/* Contenedor del menú admin */
+.admin-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.usuario-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+/* Icono de admin - Negro y Gris */
+.icon {
+  background: none;
+  border: none;
+  color: #333333; /* Negro */
+  cursor: pointer;
+  padding: 0.6rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(148, 185, 255, 0.1); /* Fondo gris azulado claro */
+  border: 2px solid transparent;
+}
+
+.icon:hover {
+  color: #000000; /* Negro más intenso */
+  background-color: rgba(148, 185, 255, 0.3); /* Gris azulado más oscuro */
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(79, 172, 254, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dropdown del administrador - Estilo actualizado */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: rgba(217, 217, 217, 0.95); 
+  backdrop-filter: blur(8px); /* Efecto vidrio */
+  min-width: 280px; /* Un poco más ancho */
+  border-radius: 12px; /* Bordes más redondeados */
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  padding: 0.8rem 0;
+  margin-top: 0.8rem;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-in-out;
+  border: 1px solid rgba(148, 185, 255, 0.2);
+}
+
+
+/* Triángulo del dropdown */
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 15px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid rgba(217, 217, 217, 0.95);
+}
+
+.dropdown a,
+.dropdown button {
+  display: block;
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  text-decoration: none;
+  color: #333333; /* Negro */
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+  background-color: rgba(148, 185, 255, 0.2); /* Azul claro al hover */
+  color: #4facfe; /* Azul del texto */
+  padding-left: 2rem; /* Desplazamiento suave */
+  transform: translateX(5px);
+}
+
+.dropdown a::after,
+.dropdown button::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
+  transform: scale(0);
+  transition: transform 0.5s ease;
+  border-radius: 0;
+  pointer-events: none;
+}
+
+.dropdown a:hover::after,
+.dropdown button:hover::after {
+  transform: scale(1);
+}
+
+/* Separador para el botón de cerrar sesión */
+.dropdown button {
+  border-top: 1px solid rgba(148, 185, 255, 0.3);
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  color: #e74c3c; /* Rojo para cerrar sesión */
+  font-weight: 600;
+}
+
+.dropdown button:hover {
+  background-color: rgba(231, 76, 60, 0.1); /* Rojo muy suave */
+  color: #c0392b; /* Rojo más oscuro */
+}
+
+/* Animación de entrada del dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .nav-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn {
+    padding: 0.7rem 1.2rem; /* Ajuste de padding para móviles */
+  }
+
+  .admin-menu {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+  .usuario-menu {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .dropdown {
+    right: 50%;
+    transform: translateX(50%);
+    min-width: 250px;
+  }
+  
+  .dropdown::before {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+}
