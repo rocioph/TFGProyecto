@@ -10,7 +10,7 @@ const app = express();
 const JWT_SECRET = '17012002';
 
 app.use(express.json());
-
+/*holaaa */
 // CORS para React
 app.use(cors({
   origin: 'http://localhost:3000',
