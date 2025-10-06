@@ -85,7 +85,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-
+// ********************************************************************Ruta de registro********************************************************************//
 app.post('/api/registro', async (req, res) => {
   console.log('Petición de registro recibida:', req.body);
 
@@ -157,6 +157,66 @@ app.post('/api/registro', async (req, res) => {
     res.status(500).json({ message: "Error en el servidor" });
   }
 });
+
+// ********************************************************************Ruta para recuperar la contraseña********************************************************************//
+app.post('/api/recoverPassword', async (req, res) => {
+  
+  console.log('Petición de registro recibida:', req.body);
+
+  const { email } = req.body;
+
+  try {
+    // Verificar que no exista el email
+    db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
+
+      if (err) {
+        console.error('Error buscando usuario en BD:', err.sqlMessage || err);
+        return res.status(500).json({ message: 'Error al buscar usuario en la BD', error: err });
+      }
+
+      if (results.length == 0) {
+        return res.status(400).json({ message: 'No puedes reestablecer la contraseña porque no existe ningun usuario con ese email' });
+      }
+
+      /*
+      // Hash de la contraseña
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insertar usuario en la BD
+      console.log("Datos a insertar en BD:", { nombre, apellidos, email, telefono, fechaNac });
+
+      db.query(
+        'INSERT INTO usuarios (nombre, apellidos, email, telef, fNac, password, rol, fRegistro) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
+        [nombre, apellidos, email, telefono, fechaNac, hashedPassword, 'usuario'],
+        (err, result) => {
+          if (err) {
+            console.error('Error insertando usuario en BD:', err.sqlMessage || err);
+            return res.status(500).json({ message: 'Error al insertar usuario en la BD', error: err });
+          }
+            //generar token para el nuevo usuario
+            const token = jwt.sign(
+            { id: result.insertId, email, rol: "usuario" },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+          );
+
+          res.status(201).json({
+            message: 'Registro exitoso',
+            token,
+            user: {
+              rol: "usuario",
+            },
+          });
+        }
+      );*/
+    });
+
+  } catch (error) {
+    console.error("Error en ruta de registro:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+});
+
 
 
 

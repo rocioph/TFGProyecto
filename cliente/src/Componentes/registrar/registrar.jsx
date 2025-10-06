@@ -135,7 +135,7 @@ const Registrar = () => {
           <br />
 
           <p className="RecoverPassword-link">
-            <a href="/RecoverPassword">¿Has olvidado tu contraseña?</a>
+            <a href="/recoverPassword">¿Has olvidado tu contraseña?</a>
           </p>
 
           <button type="submit" className="btn-register-submit">
