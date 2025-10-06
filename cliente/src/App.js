@@ -2,6 +2,7 @@ import './App.css';
 import Navbar from './Componentes/navbar/navbar';
 import { Routes, Route } from 'react-router-dom'; // ← Quita BrowserRouter
 import Login from './Componentes/login/login';
+import Registrar from './Componentes/registrar/registrar';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} /> 
+        <Route path="/registro" element={<Registrar />} /> 
         {/* Añade más rutas aquí */}
         {/* Añade más rutas aquí */}
       </Routes>
