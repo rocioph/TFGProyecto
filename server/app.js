@@ -8,6 +8,7 @@ require('dotenv').config();
 const SECRET_RECAPTCHA = process.env.RECAPTCHA_SECRET; 
 const app = express();
 const JWT_SECRET = '17012002';
+const { sendMail, generateRegistrationEmail } = require('./routes/sendEmail');
 
 app.use(express.json());
 
@@ -139,7 +140,7 @@ app.post('/api/registro', async (req, res) => {
             { id: result.insertId, email, rol: "usuario" },
             JWT_SECRET,
             { expiresIn: '24h' }
-          );
+            );
 
           res.status(201).json({
             message: 'Registro exitoso',
@@ -158,66 +159,124 @@ app.post('/api/registro', async (req, res) => {
   }
 });
 
-// ********************************************************************Ruta para recuperar la contraseña********************************************************************//
+// ********************************************************************Ruta para solicitar el cambio de contraseña********************************************************************//
 app.post('/api/recoverPassword', async (req, res) => {
-  
-  console.log('Petición de registro recibida:', req.body);
+  console.log('Petición de recuperación recibida:', req.body);
 
   const { email } = req.body;
 
-  try {
-    // Verificar que no exista el email
-    db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
-
-      if (err) {
-        console.error('Error buscando usuario en BD:', err.sqlMessage || err);
-        return res.status(500).json({ message: 'Error al buscar usuario en la BD', error: err });
-      }
-
-      if (results.length == 0) {
-        return res.status(400).json({ message: 'No puedes reestablecer la contraseña porque no existe ningun usuario con ese email' });
-      }
-
-      /*
-      // Hash de la contraseña
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Insertar usuario en la BD
-      console.log("Datos a insertar en BD:", { nombre, apellidos, email, telefono, fechaNac });
-
-      db.query(
-        'INSERT INTO usuarios (nombre, apellidos, email, telef, fNac, password, rol, fRegistro) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())',
-        [nombre, apellidos, email, telefono, fechaNac, hashedPassword, 'usuario'],
-        (err, result) => {
-          if (err) {
-            console.error('Error insertando usuario en BD:', err.sqlMessage || err);
-            return res.status(500).json({ message: 'Error al insertar usuario en la BD', error: err });
-          }
-            //generar token para el nuevo usuario
-            const token = jwt.sign(
-            { id: result.insertId, email, rol: "usuario" },
-            JWT_SECRET,
-            { expiresIn: '24h' }
-          );
-
-          res.status(201).json({
-            message: 'Registro exitoso',
-            token,
-            user: {
-              rol: "usuario",
-            },
-          });
-        }
-      );*/
-    });
-
-  } catch (error) {
-    console.error("Error en ruta de registro:", error);
-    res.status(500).json({ message: "Error en el servidor" });
+  if (!email) {
+    return res.status(400).json({ message: 'Falta el email' });
   }
+  
+  // 1. Verificar si el usuario existe
+  db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, results) => {
+    if (err) {
+      console.error('Error buscando usuario en BD:', err.sqlMessage || err);
+      return res.status(500).json({ message: 'Error al buscar usuario en la BD', error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).json({ message: 'No existe ningún usuario con ese email' });
+    }
+
+    const result = results[0];
+
+    //generar token de recuperacion
+    const recoveryToken = jwt.sign(
+            { id: result.id, email, type:  'password_recovery'},
+            JWT_SECRET,
+            { expiresIn: '1h' }
+    )
+
+    // Enviar email con el token de recuperación CORREGIDO
+    const recoveryLink = `http://localhost:3000/changePassword?token=${recoveryToken}`;
+
+    try {
+
+      const html = generateRegistrationEmail(
+          "Recuperar contraseña",
+          "Hemos recibido una solicitud para cambiar tu contraseña. Haz clic en el botón para establecer una nueva. Si no solicitaste este cambio, puedes ignorar este mensaje.",
+          "CAMBIAR CONTRASEÑA",
+          recoveryLink
+      );
+
+      // 3. Enviar el email
+      await sendMail(email, "Recuperar contraseña", html);
+
+      return res.json({ message: "Correo enviado correctamente " });
+
+    } catch (error) {
+      console.error("Error enviando correo:", error);
+      return res.status(500).json({ message: "Error enviando el correo" });
+    }
+  });
 });
 
+// ********************************************************************Ruta para cambiar la contraseña********************************************************************//
+app.post('/api/changePassword', async (req, res) => {
 
+  console.log('Petición de cambio de contraseña recibida:', req.body);
+
+  const { pass, passConfirmed, token} = req.body;
+
+  // Validar campos obligatorios
+  if (!pass || !passConfirmed || !token) {
+    return res.status(400).json({ message: 'Faltan datos obligatorios' });
+  }
+
+
+  if(pass!=passConfirmed)
+  {
+    return res.status(400).json({ message: "Las contraseñas no coinciden" });
+  }
+
+  // Hash de la contraseña
+  const hashedPassword = await bcrypt.hash(pass, 10);
+
+  try{
+    // Verificar y decodificar el token
+    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Buscar usuario en la base de datos
+    const [userResults] = await db.promise().query('SELECT * FROM usuarios WHERE id = ?', [decoded.id]);
+
+    if(userResults.length==0)
+    {
+      return res.status(404).json({message: 'Usuario no encontrado'});
+    }
+
+    const user = userResults[0];
+
+    // Actualizar la contraseña en la base de datos
+    await db.promise().query(
+      'UPDATE usuarios SET password = ? WHERE id = ?',
+      [hashedPassword, user.id]
+    );
+
+    console.log(`Contraseña actualizada para usuario: ${user.email}`);
+
+    res.json({ 
+      message: 'Contraseña cambiada exitosamente',
+      success: true 
+    });
+
+  }catch (error) {
+    console.error('Error cambiando contraseña:', error);
+    
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+    
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'El token ha expirado' });
+    }
+    
+    res.status(500).json({ message: 'Error del servidor al cambiar la contraseña' });
+  }
+
+
+});
 
 
 // Inicia el servidor
