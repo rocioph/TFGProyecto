@@ -1,161 +1,214 @@
-/* login.css */
+/* login.css - MISMO ESTILO QUE CAMBIAR CONTRASEÑA */
 .register-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 80vh;
     padding: 20px;
+    /* Mantener tu fondo original */
+    background: linear-gradient(135deg, #94b9ff 0%, #e07a68 100%);
 }
 
 .register-form {
-    background: rgba(255, 255, 255, 0.2); /* transparente */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 15px;
-    padding: 80px;
+    background: rgba(248, 250, 252, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 60px 50px;
     width: 100%;
     max-width: 500px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 8px 32px rgba(148, 185, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
 }
 
-/*
-.login-form:hover {
-    box-shadow: 0 0 25px rgba(82, 43, 43, 0.7),
-                0 0 50px rgba(247, 163, 75, 0.5);
-    transform: scale(1.01);
-}*/
-
+.register-form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(148, 185, 255, 0.1) 0%, transparent 70%);
+}
 
 .register-form h1 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #000000;
-    font-size: 28px;
-    font-weight: 700;
+    margin-bottom: 40px;
+    color: #2C3E50;
+    font-size: 32px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.register-form h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #94b9ff, #e07a68);
+    border-radius: 2px;
 }
 
 .register-form form {
     display: flex;
     flex-direction: column;
+    gap: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .register-form label {
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #fffbfb;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #2F4F4F;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+
 .register-form input {
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    padding: 16px 20px;
+    border: 2px solid #E8E8E8;
+    border-radius: 12px;
     font-size: 16px;
     width: 100%;
     box-sizing: border-box;
-    background-color: #D9D9D9;
+    background: rgba(248, 250, 252, 0.8);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .register-form input:focus {
     outline: none;
-    border-color: #4285f4;
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    border-color: #94b9ff;
+    background: white;
+    box-shadow: 
+        0 4px 16px rgba(148, 185, 255, 0.3),
+        0 0 0 4px rgba(148, 185, 255, 0.1);
+    transform: translateY(-2px);
 }
 
-/* ---------- BOTÓN REGISTRAR ---------- */
+.register-form input::placeholder {
+    color: #A0A0A0;
+    font-weight: 400;
+}
+
+
+/* BOTÓN LOGIN - MISMO ESTILO */
 .btn-register-submit {
-    padding: 12px;
-    width: 50%;
-    margin: 10px auto;
+    padding: 18px;
+    width: 60%;
+    margin: 20px auto 0;
     display: block;
     text-align: center;
-
-    background-color: #94b9ff;
+    background: linear-gradient(135deg, #94b9ff, #7aa3ff);
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
-
     position: relative;
-    overflow: hidden; /* para la onda */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(148, 185, 255, 0.3);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 
+        0 6px 20px rgba(148, 185, 255, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* efecto de onda */
-.btn-register-submit::after {
+.btn-register-submit::before {
     content: '';
     position: absolute;
+    top: 0;
+    left: -100%;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.5s ease;
-    border-radius: 50%;
-    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
 }
 
-.btn-register-submit:hover::after {
-    transform: scale(2);
+.btn-register-submit:hover::before {
+    left: 100%;
 }
 
-/* hover = levita igual que navbar */
 .btn-register-submit:hover {
-    background-color: #7aa3ff;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 18px rgba(148, 185, 255, 0.5);
-    animation: pulse 0.3s ease-in-out;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+        0 12px 30px rgba(148, 185, 255, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #7aa3ff, #94b9ff);
 }
 
-/* animación pulse (igual que navbar) */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.btn-register-submit:active {
+    transform: translateY(-1px) scale(1);
+    box-shadow: 
+        0 4px 15px rgba(148, 185, 255, 0.4),
+        0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.btn-register-submit:disabled {
+    background: #CCCCCC;
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
 /* ---------- LINKS ---------- */
-.Login-link {
-    text-align: center;
-    margin-top: 20px;
-    color: #000000;
-    font-size: 14px;
-}
-
-.Login-link a {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.Login-link a:hover {
-    text-decoration: underline;
-}
-
 .RecoverPassword-link {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .RecoverPassword-link a {
-    color: #000000;
+    color: #2C3E50;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .RecoverPassword-link a:hover {
     text-decoration: underline;
+    color: #94b9ff;
 }
 
+.LoginToLink-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #2C3E50;
+    font-size: 14px;
+}
 
+.LoginToLink-link a {
+    color: #e07a68 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.LoginToLink-link a:hover {
+    text-decoration: underline !important;
+    color: #94b9ff !important;
+}
 /* ---------- MENSAJE DE ERROR (MEJORADO) ---------- */
 .error {
     color: #ffffff;

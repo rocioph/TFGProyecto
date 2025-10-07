@@ -103,8 +103,8 @@ const Login = () => {
             />
             <br />
 
-            {/* 🔹 reCAPTCHA */}
-            <div style={{ marginTop: 12, marginBottom: 12 }}>
+            {/* 🔹 reCAPTCHA - CENTRADO */}
+            <div className="recaptcha-container">
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={SITE_KEY}

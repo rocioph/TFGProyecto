@@ -150,7 +150,7 @@ const Registrar = () => {
                     </div>
                 )}
 
-                <p className="Login-link">
+                <p className="LoginToLink-link">
                     ¿Tienes una cuenta? <a href="/login">Inicia sesión</a>
                 </p>
             </div>
