@@ -7,12 +7,10 @@ const ChangePassword = () => {
     const [pass, setPass] = useState("");
     const [passConfirmed, setPassConfirmed] = useState("");
     const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [success, setSuccess] = useState(false); 
     const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // Obtener token desde los parámetros de la URL
         const urlToken = searchParams.get('token');
         console.log("Token desde URL:", urlToken);
         
@@ -26,7 +24,7 @@ const ChangePassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-        setSuccess(null);
+        setSuccess(false);
 
         if (pass !== passConfirmed) {
             setError("Las contraseñas no coinciden");
@@ -38,8 +36,6 @@ const ChangePassword = () => {
             return;
         }
 
-        setLoading(true);
-
         try {
             const res = await fetch("http://localhost:5000/api/changePassword", {
                 method: "POST",
@@ -47,9 +43,9 @@ const ChangePassword = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    token: token, // ✅ ENVIAR TOKEN EN EL BODY (así lo espera tu backend)
-                    pass: pass,   // ✅ usar 'pass' (así lo espera tu backend)
-                    passConfirmed: passConfirmed // ✅ usar 'passConfirmed' (así lo espera tu backend)
+                    token: token,
+                    pass: pass,
+                    passConfirmed: passConfirmed
                 }),
             });
 
@@ -58,9 +54,8 @@ const ChangePassword = () => {
             if (!res.ok) {
                 setError(data.message || "Error al cambiar la contraseña");
             } else {
-                setSuccess("¡Contraseña cambiada exitosamente! Redirigiendo al login...");
+                setSuccess(true); // Cambiar a true
                 
-                // Redirigir al login después de 2 segundos
                 setTimeout(() => {
                     window.location.href = "/login";
                 }, 2000);
@@ -69,9 +64,7 @@ const ChangePassword = () => {
         } catch (err) {
             console.error("Error completo:", err);
             setError("Error de conexión con el servidor");
-        } finally {
-            setLoading(false);
-        }
+        } 
     };
 
     return (
@@ -79,39 +72,46 @@ const ChangePassword = () => {
             <div className="change-form">
                 <h1>Cambiar Contraseña</h1>
                 
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="pass">Nueva Contraseña:</label>
-                    <input
-                        type="password"
-                        id="pass"
-                        required
-                        value={pass}
-                        onChange={(e) => setPass(e.target.value)}
-                    />
-                    <br />
+                {/* Mostrar formulario solo si no hay éxito */}
+                {!success ? (
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="pass">Nueva Contraseña:</label>
+                        <input
+                            type="password"
+                            id="pass"
+                            required
+                            value={pass}
+                            onChange={(e) => setPass(e.target.value)}
+                        />
 
-                    <label htmlFor="passConfirmed">Confirmar Contraseña:</label>
-                    <input
-                        type="password"
-                        id="passConfirmed"
-                        required
-                        value={passConfirmed}
-                        onChange={(e) => setPassConfirmed(e.target.value)}
-                    />
-                    <br />
+                        <label htmlFor="passConfirmed">Confirmar Contraseña:</label>
+                        <input
+                            type="password"
+                            id="passConfirmed"
+                            required
+                            value={passConfirmed}
+                            onChange={(e) => setPassConfirmed(e.target.value)}
+                        />
 
-                    <button 
-                        type="submit" 
-                        className="btn-change-submit"
-                    >
-                        {loading ? "Cambiando contraseña..." : "Cambiar contraseña"}
-                    </button>
-                </form>
+                        <button 
+                            type="submit" 
+                            className="btn-change-submit"
+                        >
+                            Cambiar Contraseña
+                        </button>
 
-                {error && <p className="error">{error}</p>}
-
-                
-                {success && <p className="success">{success}</p>}
+                        {error && <p className="error">{error}</p>}
+                    </form>
+                ) : (
+                    // Mostrar mensaje de éxito cuando success es true
+                    <div className="success-message">
+                        <div className="success-icon">✓</div>
+                        <div className="success-text">
+                            ¡Contraseña cambiada exitosamente!<br />
+                            Redirigiendo al login...
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

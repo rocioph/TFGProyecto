@@ -155,13 +155,207 @@
     text-decoration: underline;
 }
 
-/*holaaaaaa*/ /*holaaa*/
-/* Mensajes de error en rojo */
-
+/* ---------- MENSAJE DE ERROR (MEJORADO) ---------- */
 .error {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 15px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(220, 53, 69, 0.7));
+    border: 2px solid #dc3545;
+    border-radius: 12px;
+    text-align: center;
+    animation: errorShake 0.5s ease-in-out;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de brillo en el error */
+.error::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.7s ease-in-out;
+    pointer-events: none;
+}
+
+.error:hover::before {
+    left: 100%;
+}
+
+/* Animación de shake para llamar más la atención */
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Icono de error opcional */
+.error::after {
+    content: '⚠️';
+    margin-right: 8px;
+    font-size: 18px;
+}
+/* ---------- MENSAJE DE ÉXITO (MEJORADO Y ELEGANTE) ---------- */
+.success-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(76, 175, 80, 0.15));
+    border: 2px solid #4caf50;
+    border-radius: 16px;
+    animation: successCelebration 0.8s ease-out;
+    box-shadow: 
+        0 8px 25px rgba(76, 175, 80, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    position: relative;
+    overflow: hidden;
+}
+
+.success-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    animation: successIconPop 0.6s ease-in-out 0.3s both;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    position: relative;
+    z-index: 2;
+}
+
+.success-text {
+    color: #1b5e20;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0;
+    text-align: center;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    position: relative;
+    z-index: 2;
+}
+
+/* Efecto de brillo mejorado */
+.success-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent
+    );
+    transition: left 1s ease-in-out;
+    pointer-events: none;
+}
+
+.success-message:hover::before {
+    left: 100%;
+}
+
+/* Partículas de confeti (efecto opcional) */
+.success-message::after {
+    content: '🎉';
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.3;
+    animation: confettiFloat 3s ease-in-out infinite;
+    top: 10px;
+    right: 15px;
+}
+
+/* Animaciones mejoradas */
+@keyframes successCelebration {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-30px) scale(0.8); 
+    }
+    50% { 
+        transform: translateY(5px) scale(1.02); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes successIconPop {
+    0% { 
+        transform: scale(0) rotate(-180deg); 
+        opacity: 0; 
+    }
+    70% { 
+        transform: scale(1.2) rotate(10deg); 
+    }
+    100% { 
+        transform: scale(1) rotate(0); 
+        opacity: 1; 
+    }
+}
+
+@keyframes confettiFloat {
+    0%, 100% { 
+        transform: translateY(0) rotate(0); 
+    }
+    33% { 
+        transform: translateY(-5px) rotate(120deg); 
+    }
+    66% { 
+        transform: translateY(3px) rotate(240deg); 
+    }
+}
+
+/* Efecto de borde luminoso */
+.success-message {
+    background: 
+        linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(76, 175, 80, 0.15)),
+        radial-gradient(circle at top right, rgba(76, 175, 80, 0.3), transparent 70%),
+        radial-gradient(circle at bottom left, rgba(76, 175, 80, 0.2), transparent 70%);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .success-message {
+        padding: 20px;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .success-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .success-text {
+        font-size: 16px;
+    }
 }
 
 /* ---------- RESPONSIVE ---------- */

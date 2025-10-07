@@ -19,7 +19,7 @@ const Login = () => {
     - Incialmente null (sin error)
   */
   const [error, setError] = useState(null);
-
+  const [success, setSuccess] = useState(false);
 
   //no soy un robot//
   const recaptchaRef = useRef(null);
@@ -60,14 +60,15 @@ const Login = () => {
       } else {
 
         setError(null);
-        console.log("Login correcto ✅", data);
+        setSuccess(true);
 
         //guardar el token en localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("rol", data.user.rol);
 
-        // Redirigir al dashboard
-        window.location.href = "/";
+        setTimeout(() => {
+                    window.location.href = "/";
+        }, 2000);
 
       }
     } catch (err) {
@@ -79,52 +80,62 @@ const Login = () => {
     <div className="login-container">
       <div className="login-form">
         <h1>Iniciar Sesión</h1>
-        <form onSubmit={handleSubmit}> {/* Conecta el envio del formulario con la funcion que hicimos antes */}
-          <label htmlFor="email">Email:</label> {/* Etiqueta para el input del email. htmlFor="email" enlaza la etiqueta con el inputo */}
-          <input
-            type="email"
-            id="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)} 
-          />
-          <br />
 
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <br />
-
-          {/* 🔹 reCAPTCHA */}
-          <div style={{ marginTop: 12, marginBottom: 12 }}>
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={SITE_KEY}
-              onChange={(token) => {
-                setRecaptchaToken(token);
-                setError(null);
-              }}
-              onExpired={() => {
-                setRecaptchaToken(null);
-                if (recaptchaRef.current) recaptchaRef.current.reset();
-              }}
+        {!success ? (
+          <form onSubmit={handleSubmit}> {/* Conecta el envio del formulario con la funcion que hicimos antes */}
+            <label htmlFor="email">Email:</label> {/* Etiqueta para el input del email. htmlFor="email" enlaza la etiqueta con el inputo */}
+            <input
+              type="email"
+              id="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} 
             />
-          </div>
+            <br />
 
-          <p className="RecoverPassword-link">
-            <a href="/recoverPassword">¿Has olvidado tu contraseña?</a>
-          </p>
+            <label htmlFor="password">Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <br />
 
-          <button type="submit" className="btn-login-submit">
-            Iniciar Sesión
-          </button>
-        </form>
+            {/* 🔹 reCAPTCHA */}
+            <div style={{ marginTop: 12, marginBottom: 12 }}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={SITE_KEY}
+                onChange={(token) => {
+                  setRecaptchaToken(token);
+                  setError(null);
+                }}
+                onExpired={() => {
+                  setRecaptchaToken(null);
+                  if (recaptchaRef.current) recaptchaRef.current.reset();
+                }}
+              />
+            </div>
 
+            <p className="RecoverPassword-link">
+              <a href="/recoverPassword">¿Has olvidado tu contraseña?</a>
+            </p>
+
+            <button type="submit" className="btn-login-submit">
+              Iniciar Sesión
+            </button>
+          </form>
+        ) : (
+                    // Mostrar mensaje de éxito cuando success es true
+                    <div className="success-message">
+                        <div className="success-icon">✓</div>
+                        <div className="success-text">
+                          Login realizado con éxito<br />
+                        </div>
+                    </div>
+                )}
         {error && <p className="error">{error}</p>}
 
         <p className="Register-link">
