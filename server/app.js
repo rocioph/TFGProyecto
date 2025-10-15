@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -274,7 +275,62 @@ app.post('/api/changePassword', async (req, res) => {
     
     res.status(500).json({ message: 'Error del servidor al cambiar la contraseña' });
   }
+})
 
+// ********************************************************************Ruta para ver los animales pendiente de adopcion********************************************************************//
+app.use("/img", express.static(path.join(process.cwd(), "img")));
+app.get('/api/adoptar', async (req, res) => {
+
+  try{
+    
+    // Consulta a la base de datos: animales en adopción (estado = 'disponible')
+    const [rows] = await db
+      .promise()
+      .query("SELECT * FROM animales WHERE estado = 'disponible'");
+
+     if (rows.length === 0) {
+      return res.status(200).json([]); // Devuelve array vacío si no hay animales
+    }
+
+    // Mapea los datos y asegura ruta correcta a las fotos
+    const animales = rows.map((a) => ({
+      id: a.id,
+      nombre: a.nombre,
+      tipo: a.tipo,
+      genero: a.genero,
+      tamano: a.tamano,
+      raza: a.raza,
+      fechaNac: a.fechaNac,
+      fecha_ingreso: a.fecha_ingreso,
+      historia: a.historia,
+      fotos: a.fotos, 
+      enfermedades: a.enfermedades,
+      vacunado: a.vacunado, 
+      castrado: a.castrado,
+      necesidades_especiales: a.necesidades_especiales,
+      personalidad: a.personalidad,
+      requisitos_adopcion: a.requisitos_adopcion,
+      estado: a.estado, 
+      motivo: a.motivo,
+      fecha_estimada_disponibilidad: a.fecha_estimada_disponibilidad,
+      solicitudes_adopcion: a.solicitudes_adopcion,
+      color: a.color, 
+      peso: a.peso,
+      urgente: a.urgente,
+      nivel_energia: a.nivel_energia,
+      buen_ninos: a.buen_ninos,
+      buen_gatos: a.buen_gatos,
+      buen_perros: a.buen_perros, 
+      apto_piso: a.apto_piso, 
+      necesita_jardin: a.necesita_jardin
+    }));
+
+    res.status(200).json(animales);
+
+  }catch (error) {
+    console.error("❌ Error obteniendo animales:", error);
+    res.status(500).json({ message: "Error al obtener los animales" });
+  }
 
 });
 

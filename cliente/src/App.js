@@ -5,6 +5,7 @@ import Login from './Componentes/login/login';
 import Registrar from './Componentes/registrar/registrar';
 import RecoverPassword from './Componentes/recoverPassword/recoverPassword';
 import ChangePassword from './Componentes/recoverPassword/changePassword';
+import Adoptar from './Componentes/adoptar/adoptar';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/registro" element={<Registrar />} /> 
         <Route path="/recoverPassword" element={<RecoverPassword />} />
         <Route path="/changePassword" element={<ChangePassword />} />
-        {/* Añade más rutas aquí */}
+        <Route path="/adoptar" element={<Adoptar />} />
         {/* Añade más rutas aquí */}
       </Routes>
     </div>

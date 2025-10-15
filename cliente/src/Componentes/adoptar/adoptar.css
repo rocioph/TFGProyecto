@@ -1,0 +1,368 @@
+/* ================================
+   Cabecera
+===================================*/
+.cabecera {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 1.5rem 2rem;
+  background:#94B9FF;
+  border: 2px solid #000000; /* Borde negro */
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto 3rem auto; /* Más margen arriba */
+  max-width: 50%;
+  margin-top: 4rem; /* Espacio extra arriba */
+}
+
+.cabecera h1 {
+  font-size: 1.8rem;
+  font-weight: 800; /* Más negrita */
+  color: #000000; /* Letra negra */
+  margin: 0;
+  letter-spacing: -0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  align-items: center;
+}
+/* ================================
+   Lista de animales
+===================================*/
+.lista-perros {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ← 2 COLUMNAS IGUALES */
+  gap: 2rem;
+  padding: 0 1rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ================================
+   Tarjeta de animal - IMAGEN IZQUIERDA, DATOS DERECHA
+===================================*/
+.card {
+  position: relative;
+  background: rgba(248, 250, 252, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  height: 500px; /* ← Aumenté de 450px a 500px */
+  min-height: 450px; /* ← Aumenté de 320px a 350px */
+  max-width: 100%; /* ← Aumenté de 80% a 85% */
+  align-items: center;
+  margin: auto;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Foto a la IZQUIERDA - Mejor proporción */
+.foto-contenedor {
+  width: 45%; /* Un poco más de espacio para la foto */
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.foto-contenedor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .foto-contenedor img {
+  transform: scale(1.05);
+}
+
+/* Información a la DERECHA */
+.info {
+  width: 55%; /* Ajustado al nuevo ancho de foto */
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribuye el espacio mejor */
+}
+
+/* ================================
+   Línea debajo del nombre
+===================================*/
+.nombre {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 1rem;
+  text-align: left;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.nombre::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #94b9ff, #e07a68);
+  border-radius: 2px;
+}
+
+/* Contenedor de la información (sin el botón) */
+.info-contenido {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lista de datos */
+.detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.detalle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detalle-label {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 0.9rem;
+  flex-shrink: 0; /* Evita que se comprima */
+}
+
+.detalle-valor {
+  color: #1a202c;
+  font-weight: 500;
+  text-align: right;
+  flex-shrink: 0; /* Evita que se comprima */
+  margin-left: 1rem; /* Espacio entre label y valor */
+}
+
+/* Botón Adoptar - Tamaño mejorado */
+.btn-adoptar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+  min-width: 150px;
+  max-width: 220px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  align-self: center;
+  margin-top: 3rem;
+  width: 80%;
+}
+
+.btn-adoptar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ================================
+   Paginación
+===================================*/
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 1.5rem;
+}
+
+.paginacion button {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4a5568;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+  transform: translateY(-1px);
+}
+
+.paginacion button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacion span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+/* ================================
+   Mensajes de estado
+===================================*/
+.mensaje-cargando,
+.mensaje-error,
+.mensaje-vacio {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 4rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.mensaje-error {
+  color: #e53e3e;
+}
+
+/* ================================
+   Indicador de Urgencia
+===================================*/
+.indicador-urgente {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  z-index: 10;
+  box-shadow: 0 3px 8px rgba(255, 140, 0, 0.4);
+  border: 2px solid #ffffff;
+  animation: pulse-urgente 2s infinite;
+  cursor: help;
+}
+
+.cabecera-nombre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.badge-urgente {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 2px 6px rgba(255, 140, 0, 0.3);
+  border: 1px solid #ffa500;
+  animation: bounce-soft 3s infinite;
+}
+
+@keyframes pulse-urgente {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 3px 8px rgba(255, 140, 0, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 140, 0, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 3px 8px rgba(255, 140, 0, 0.4);
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* ================================
+   Responsive
+===================================*/
+@media (max-width: 768px) {
+  .cabecera h1 {
+    font-size: 2rem;
+  }
+  
+  .lista-perros {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0;
+  }
+  
+  .card {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+  }
+  
+  .foto-contenedor {
+    width: 100%;
+    height: 250px; /* Más alta en móvil */
+  }
+  
+  .info {
+    width: 100%;
+  }
+  
+  .btn-adoptar {
+    width: 100%;
+    max-width: none;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .cabecera h1 {
+    font-size: 1.7rem;
+  }
+  
+  .lista-perros {
+    grid-template-columns: 1fr;
+    padding: 0 0.5rem;
+  }
+  
+  .info {
+    padding: 1.2rem;
+  }
+  
+  .foto-contenedor {
+    height: 220px;
+  }
+  
+  .detalle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+  
+  .detalle-valor {
+    text-align: left;
+    margin-left: 0;
+  }
+}
