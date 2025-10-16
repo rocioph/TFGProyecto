@@ -26,7 +26,7 @@
 /* ================================
    Lista de animales
 ===================================*/
-.lista-perros {
+.lista-animales {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* ← 2 COLUMNAS IGUALES */
   gap: 2rem;
@@ -306,12 +306,12 @@
 FILTRO
 ===================================*/
 .contenedor-filtro {
+  position: relative; /* Necesario para colocar el panel debajo del icono */
   display: flex;
-  justify-content: flex-right; /* Alinea el icono a la derecha */
-  max-width: 1300px;
-  margin: -1rem auto 2rem auto; /* Margen negativo para subirlo más cerca del título */
-  padding: 0 1rem;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .icono-filtros {
   cursor: pointer;
@@ -344,11 +344,13 @@ FILTRO
 
 /* Alternativa: Panel de filtros en una sola línea */
 .filtros-panel {
+  position: absolute;
+  top: 60px; /* Altura debajo del icono */
+  left: 0;
   background: white;
   border-radius: 15px;
   padding: 1.5rem;
-  margin: 1rem auto 2rem auto;
-  max-width: 1300px;
+  width: max-content;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border: 2px solid #e2e8f0;
   display: flex;
@@ -356,6 +358,7 @@ FILTRO
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  z-index: 50; /* Para que flote sobre el resto */
 }
 
 .filtro {
@@ -384,6 +387,63 @@ FILTRO
 }
 
 /* ================================
+   Contenedor de Búsqueda y Filtro
+===================================*/
+.contenedor-busqueda-filtro {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Puedes usar space-between si prefieres separación total */
+  gap: 1rem; /* Espacio entre el filtro y el buscador */
+  max-width: 1300px;
+  min-height: 120px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
+  flex-wrap: wrap; /* Hace que se adapte en pantallas pequeñas */
+  position: relative;
+}
+
+
+/* Buscador con lupa */
+.buscador-con-lupa {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+}
+
+.campo-busqueda {
+  width: 100%;
+  padding: 0.8rem 3rem 0.8rem 1.2rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.campo-busqueda:focus {
+  outline: none;
+  border-color: #94b9ff;
+  box-shadow: 0 4px 15px rgba(148, 185, 255, 0.3);
+}
+
+.campo-busqueda::placeholder {
+  color: #a0aec0;
+}
+
+.lupa {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #64748b;
+  width: 35px;  /* ← Más pequeña */
+  height: 35px; /* ← Más pequeña */
+  pointer-events: none;
+}
+
+/* ================================
    Responsive
 ===================================*/
 @media (max-width: 768px) {
@@ -391,7 +451,7 @@ FILTRO
     font-size: 2rem;
   }
   
-  .lista-perros {
+  .lista-animales {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 0;
@@ -439,7 +499,7 @@ FILTRO
     font-size: 1.7rem;
   }
   
-  .lista-perros {
+  .lista-animales {
     grid-template-columns: 1fr;
     padding: 0 0.5rem;
   }

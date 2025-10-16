@@ -118,6 +118,9 @@ const Adoptar = () => {
     const [filtroEdad, setFiltroEdad] = useState("todos");
     const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
+    /****************Busqueda ************/
+    const [busqueda, setBusqueda] = useState("");
+
     //no es necesario que el usuario haga click en nada, se ejecuta automaticamente 
     useEffect(() => {
         const fetchAnimales = async () => {
@@ -160,7 +163,15 @@ const Adoptar = () => {
                          (filtroUrgente === "no_urgente" && a.urgente !== 1);
       const coincideEdad = filtroEdad === "todos" || 
                        clasificarEdad(a.fechaNac) === filtroEdad;
-      return coincideTamano && coincideGenero && coincideTipo && coincideUrgente && coincideEdad;
+
+      const coincideBusqueda = busqueda === "" ||
+        [a.nombre, a.raza, a.tamano, a.tipo, a.genero]
+        .some(valor =>
+         valor && valor.toString().toLowerCase().includes(busqueda.toLowerCase())
+      );
+
+      
+      return coincideTamano && coincideGenero && coincideTipo && coincideUrgente && coincideEdad && coincideBusqueda;
     });
 
 
@@ -190,78 +201,99 @@ const Adoptar = () => {
         <h1>Nuestros animales en adopción</h1>
       </header>
 
-      {/* Botón con icono de filtros */}
-      <div className="contenedor-filtro">
-        <img
-          src={`/imagenes/filtro-icon.png`}
-          alt="Filtros"
-          className="icono-filtros"
-          onClick={() => setMostrarFiltros(!mostrarFiltros)}
-        />
-      </div>
+      <div className="contenedor-busqueda-filtro">
 
-      {/* Panel de filtros que aparece al hacer clic en el icono */}
-      {mostrarFiltros && (
-        <div className="filtros-panel">
-          <div className="filtro">
-            <label>Tamaño:</label>
-            <select value={filtroTamano} onChange={(e) => setFiltroTamano(e.target.value)}>
-              <option value="todos">Todos</option>
-              <option value="muy_pequeno">Muy pequeño</option>
-              <option value="pequeño">Pequeño</option>
-              <option value="mediano">Mediano</option>
-              <option value="grande">Grande</option>
-              <option value="muy_grande">Muy grande</option>
-            </select>
-          </div>
-
-          <div className="filtro">
-            <label>Género:</label>
-            <select value={filtroGenero} onChange={(e) => setFiltroGenero(e.target.value)}>
-              <option value="todos">Todos</option>
-              <option value="macho">Macho</option>
-              <option value="hembra">Hembra</option>
-            </select>
-          </div>
-
-           <div className="filtro">
-            <label>Tipo:</label>
-            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
-              <option value="todos">Todos</option>
-              <option value="perro">Perros</option>
-              <option value="gato">Gatos</option>
-            </select>
-          </div>
-
-          <div className="filtro">
-            <label>Urgente:</label>
-            <select value={filtroUrgente} onChange={(e) => setFiltroUrgente(e.target.value)}>
-              <option value="todos">Todos</option>
-              <option value="urgente">Urgente</option>
-              <option value="no_urgente">No urgente</option>
-            </select>
-          </div>
-
-          <div className="filtro">
-            <label>Edad:</label>
-            <select value={filtroEdad} onChange={(e) => setFiltroEdad(e.target.value)}>
-              <option value="todos">Todos</option>
-              <option value="cachorro">Cachorros</option>
-              <option value="adulto">Adultos</option>
-              <option value="senior">Seniors</option>
-            </select>
-          </div>
-
+        {/* Botón con icono de filtros */}
+        <div className="contenedor-filtro">
+          <img
+            src={`/imagenes/filtro-icon.png`}
+            alt="Filtros"
+            className="icono-filtros"
+            onClick={() => setMostrarFiltros(!mostrarFiltros)}
+          />
         </div>
-      )}
 
+        {/* Campo de búsqueda con lupa */}
+        <div className="buscador-con-lupa">
+          <input
+            type="text"
+            placeholder="Buscar por nombre, raza, tamaño, género y tipo"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="campo-busqueda"
+          />
+          <img 
+            src="/imagenes/lupa-icon.png" 
+            alt="Buscar" 
+            className="lupa" 
+          />
+        </div>
+        {/* Panel de filtros que aparece al hacer clic en el icono */}
+        {mostrarFiltros && (
+          <div className="filtros-panel">
+            <div className="filtro">
+              <label>Tamaño:</label>
+              <select value={filtroTamano} onChange={(e) => setFiltroTamano(e.target.value)}>
+                <option value="todos">Todos</option>
+                <option value="muy_pequeno">Muy pequeño</option>
+                <option value="pequeño">Pequeño</option>
+                <option value="mediano">Mediano</option>
+                <option value="grande">Grande</option>
+                <option value="muy_grande">Muy grande</option>
+              </select>
+            </div>
+
+            <div className="filtro">
+              <label>Género:</label>
+              <select value={filtroGenero} onChange={(e) => setFiltroGenero(e.target.value)}>
+                <option value="todos">Todos</option>
+                <option value="macho">Macho</option>
+                <option value="hembra">Hembra</option>
+              </select>
+            </div>
+
+            <div className="filtro">
+              <label>Tipo:</label>
+              <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+                <option value="todos">Todos</option>
+                <option value="perro">Perros</option>
+                <option value="gato">Gatos</option>
+              </select>
+            </div>
+
+            <div className="filtro">
+              <label>Urgente:</label>
+              <select value={filtroUrgente} onChange={(e) => setFiltroUrgente(e.target.value)}>
+                <option value="todos">Todos</option>
+                <option value="urgente">Urgente</option>
+                <option value="no_urgente">No urgente</option>
+              </select>
+            </div>
+
+            <div className="filtro">
+              <label>Edad:</label>
+              <select value={filtroEdad} onChange={(e) => setFiltroEdad(e.target.value)}>
+                <option value="todos">Todos</option>
+                <option value="cachorro">Cachorros</option>
+                <option value="adulto">Adultos</option>
+                <option value="senior">Seniors</option>
+              </select>
+            </div>
+
+          </div>
+        )}
+
+      </div>
+      
+
+      
 
       {/*Un article es un elemento semantico que sirve para agrupar un bloque de contenido que tiene sentido por si mismo 
         animalesArray es un array probablemento y map recorre el array y devuelve un nuevo elemento jsx para cada perro 
         a representa a un animal individual
         Si animalesArray tiene 3 perros, se generaran 3 article por cada uno */}
-      <div className="lista-perros">
-
+      <div className="lista-animales">
+        
         {animalesArray.map((a) => (
           <article className="card" key={a.id}> {/*Identificamos el perro por el id*/}
 
