@@ -86,6 +86,22 @@ function calcularEdad(fechaNac) {
   }
 }
 
+function clasificarEdad(fechaNac) {
+  const hoy = new Date();
+  const nacimiento = new Date(fechaNac);
+  
+  const edadEnMeses = (hoy.getFullYear() - nacimiento.getFullYear()) * 12 + 
+                     (hoy.getMonth() - nacimiento.getMonth());
+  
+  if (edadEnMeses < 12) {
+    return 'cachorro';
+  } else if (edadEnMeses <= 84) { // 7 años = 84 meses
+    return 'adulto';
+  } else {
+    return 'senior';
+  }
+}
+
 const Adoptar = () => {
 
     const [animales, setAnimales] = useState([]); //array vacio donde gaurdaremos la lista de animales a mostrar
@@ -93,6 +109,14 @@ const Adoptar = () => {
     const [error, setError] = useState(null); //Si ocurre un fallo se guarda un string con el mensaje de error 
     const [pagina, setPagina] = useState(0); //estado de paginacion, indice de la pagina actual --> 0
     const Por_Pagina = 4; //items por pagina
+
+    /*************** FILTRO ***************/
+    const [filtroTamano, setFiltroTamano] = useState("todos");
+    const [filtroGenero, setFiltroGenero] = useState("todos");
+    const [filtroTipo, setFiltroTipo] = useState("todos");
+    const [filtroUrgente, setFiltroUrgente] = useState("todos");
+    const [filtroEdad, setFiltroEdad] = useState("todos");
+    const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
     //no es necesario que el usuario haga click en nada, se ejecuta automaticamente 
     useEffect(() => {
@@ -126,8 +150,22 @@ const Adoptar = () => {
         fetchAnimales();
     }, []);
 
+    /*************Aplicamos filtros antes de paginar****************/
+    const animalesFiltrados = animales.filter((a) => {
+      const coincideTamano = filtroTamano === "todos" || a.tamano === filtroTamano;
+      const coincideGenero = filtroGenero === "todos" || a.genero === filtroGenero;
+      const coincideTipo = filtroTipo === "todos" || a.tipo === filtroTipo;
+      const coincideUrgente = filtroUrgente === "todos" || 
+                         (filtroUrgente === "urgente" && a.urgente === 1) ||
+                         (filtroUrgente === "no_urgente" && a.urgente !== 1);
+      const coincideEdad = filtroEdad === "todos" || 
+                       clasificarEdad(a.fechaNac) === filtroEdad;
+      return coincideTamano && coincideGenero && coincideTipo && coincideUrgente && coincideEdad;
+    });
+
+
     //numero total de paginas redondeado hacia arriba
-    const totalPaginas = Math.ceil(animales.length / Por_Pagina);
+    const totalPaginas = Math.ceil(animalesFiltrados.length / Por_Pagina);
     //baja la pagina pero nunca <0
     const prevPagina = () => setPagina((p) => Math.max(0, p - 1));
     //sube la pagina pero nunca pasa del maximo 
@@ -143,15 +181,80 @@ const Adoptar = () => {
     //indice de la pagina
     const inicio = pagina * Por_Pagina;
     //array con animales que se deben de mostrar en la pagina actual 
-    const animalesArray = animales.slice(inicio, inicio + Por_Pagina);
+    const animalesArray = animalesFiltrados.slice(inicio, inicio + Por_Pagina);
 
 
     return (
     <div className="adopcion-container">
       <header className="cabecera">
         <h1>Nuestros animales en adopción</h1>
-        <div />
       </header>
+
+      {/* Botón con icono de filtros */}
+      <div className="contenedor-filtro">
+        <img
+          src={`/imagenes/filtro-icon.png`}
+          alt="Filtros"
+          className="icono-filtros"
+          onClick={() => setMostrarFiltros(!mostrarFiltros)}
+        />
+      </div>
+
+      {/* Panel de filtros que aparece al hacer clic en el icono */}
+      {mostrarFiltros && (
+        <div className="filtros-panel">
+          <div className="filtro">
+            <label>Tamaño:</label>
+            <select value={filtroTamano} onChange={(e) => setFiltroTamano(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="muy_pequeno">Muy pequeño</option>
+              <option value="pequeño">Pequeño</option>
+              <option value="mediano">Mediano</option>
+              <option value="grande">Grande</option>
+              <option value="muy_grande">Muy grande</option>
+            </select>
+          </div>
+
+          <div className="filtro">
+            <label>Género:</label>
+            <select value={filtroGenero} onChange={(e) => setFiltroGenero(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="macho">Macho</option>
+              <option value="hembra">Hembra</option>
+            </select>
+          </div>
+
+           <div className="filtro">
+            <label>Tipo:</label>
+            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="perro">Perros</option>
+              <option value="gato">Gatos</option>
+            </select>
+          </div>
+
+          <div className="filtro">
+            <label>Urgente:</label>
+            <select value={filtroUrgente} onChange={(e) => setFiltroUrgente(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="urgente">Urgente</option>
+              <option value="no_urgente">No urgente</option>
+            </select>
+          </div>
+
+          <div className="filtro">
+            <label>Edad:</label>
+            <select value={filtroEdad} onChange={(e) => setFiltroEdad(e.target.value)}>
+              <option value="todos">Todos</option>
+              <option value="cachorro">Cachorros</option>
+              <option value="adulto">Adultos</option>
+              <option value="senior">Seniors</option>
+            </select>
+          </div>
+
+        </div>
+      )}
+
 
       {/*Un article es un elemento semantico que sirve para agrupar un bloque de contenido que tiene sentido por si mismo 
         animalesArray es un array probablemento y map recorre el array y devuelve un nuevo elemento jsx para cada perro 
